@@ -19,6 +19,8 @@
 
     "create:function": "tsx scripts/create-function.ts",
 
+    "cdk:bootstrap": "tsx scripts/bootstrap.ts",
+
     "deploy:backend:dev": "STAGE=dev pnpm --filter @monorepo/infra deploy:backend",
     "deploy:backend:staging": "STAGE=staging pnpm --filter @monorepo/infra deploy:backend",
     "deploy:backend:prod": "STAGE=prod pnpm --filter @monorepo/infra deploy:backend",

@@ -33,7 +33,7 @@ A pnpm monorepo for fullstack web applications with AWS CDK backend and React fr
 ### 1. Clone and install
 
 ```bash
-git clone <repo-url>
+git clone git@github.com:jelares/monorepo-web-stack.git
 cd monorepo-web-stack
 pnpm install
 ```
@@ -198,6 +198,20 @@ When you change only one Lambda, deploy just that stack:
 ```bash
 pnpm deploy:backend:api:dev  # Only deploys ApiStack
 ```
+
+### Destroying Stacks
+
+To delete all resources for a stage:
+```bash
+cd packages/infra
+pnpm cdk destroy --all --context stage=dev
+```
+
+The `--all` flag destroys all stacks (Shared, Api, WebSocket, Frontend) in the correct dependency order.
+
+**Cleanup behavior by stage:**
+- **dev/staging**: S3 buckets auto-delete with contents, all resources removed
+- **prod**: S3 bucket is retained (must be manually deleted) to prevent accidental data loss
 
 ## Versioning & Rollback
 
