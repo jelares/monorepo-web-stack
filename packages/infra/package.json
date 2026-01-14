@@ -1,0 +1,27 @@
+{
+  "name": "@monorepo/infra",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "cdk": "cdk",
+    "deploy:backend": "cdk deploy SharedStack-$STAGE ApiStack-$STAGE WebSocketStack-$STAGE --require-approval never",
+    "deploy:api": "cdk deploy ApiStack-$STAGE --require-approval never",
+    "deploy:ws": "cdk deploy WebSocketStack-$STAGE --require-approval never",
+    "deploy:frontend": "cdk deploy FrontendStack-$STAGE --require-approval never && tsx ../../scripts/deploy-frontend.ts",
+    "rollback": "tsx ../../scripts/rollback.ts"
+  },
+  "dependencies": {
+    "aws-cdk-lib": "^2.120.0",
+    "constructs": "^10.3.0",
+    "dotenv": "^16.4.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "aws-cdk": "^2.120.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.0"
+  }
+}

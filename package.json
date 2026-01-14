@@ -1,0 +1,71 @@
+{
+  "name": "monorepo-web-stack",
+  "private": true,
+  "packageManager": "pnpm@9.15.0",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "dev": "pnpm --filter @monorepo/frontend dev",
+    "build": "pnpm -r build",
+
+    "lint": "pnpm -r lint",
+    "lint:fix": "pnpm -r lint:fix",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md,py}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md,py}\"",
+    "typecheck": "pnpm -r typecheck",
+    "check": "pnpm format:check && pnpm lint && pnpm typecheck",
+    "fix": "pnpm format && pnpm lint:fix",
+
+    "create:function": "tsx scripts/create-function.ts",
+
+    "deploy:backend:dev": "STAGE=dev pnpm --filter @monorepo/infra deploy:backend",
+    "deploy:backend:staging": "STAGE=staging pnpm --filter @monorepo/infra deploy:backend",
+    "deploy:backend:prod": "STAGE=prod pnpm --filter @monorepo/infra deploy:backend",
+    "deploy:backend:api:dev": "STAGE=dev pnpm --filter @monorepo/infra deploy:api",
+    "deploy:backend:api:staging": "STAGE=staging pnpm --filter @monorepo/infra deploy:api",
+    "deploy:backend:api:prod": "STAGE=prod pnpm --filter @monorepo/infra deploy:api",
+    "deploy:backend:ws:dev": "STAGE=dev pnpm --filter @monorepo/infra deploy:ws",
+    "deploy:backend:ws:staging": "STAGE=staging pnpm --filter @monorepo/infra deploy:ws",
+    "deploy:backend:ws:prod": "STAGE=prod pnpm --filter @monorepo/infra deploy:ws",
+
+    "deploy:frontend:staging": "STAGE=staging pnpm --filter @monorepo/infra deploy:frontend",
+    "deploy:frontend:prod": "STAGE=prod pnpm --filter @monorepo/infra deploy:frontend",
+
+    "push:staging": "pnpm fix && pnpm build && pnpm deploy:backend:staging && pnpm deploy:frontend:staging",
+    "push:prod": "pnpm fix && pnpm build && pnpm deploy:backend:prod && pnpm deploy:frontend:prod",
+
+    "rollback:staging": "STAGE=staging tsx scripts/rollback.ts",
+    "rollback:prod": "STAGE=prod tsx scripts/rollback.ts",
+
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@aws-sdk/client-cloudformation": "^3.500.0",
+    "@aws-sdk/client-cloudfront": "^3.500.0",
+    "@aws-sdk/client-lambda": "^3.500.0",
+    "@aws-sdk/client-s3": "^3.500.0",
+    "@aws-sdk/client-ssm": "^3.500.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "dotenv": "^16.4.0",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "husky": "^9.0.0",
+    "lint-staged": "^15.2.0",
+    "mime-types": "^2.1.35",
+    "@types/mime-types": "^2.1.4",
+    "prettier": "^3.2.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.0"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,yml,yaml,py}": [
+      "prettier --write"
+    ]
+  }
+}

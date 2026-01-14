@@ -1,0 +1,3 @@
+# Python dependencies for Lambda layer
+# Add packages here that you want available in all Python Lambdas
+boto3>=1.34.0
