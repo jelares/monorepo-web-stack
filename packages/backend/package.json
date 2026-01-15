@@ -6,8 +6,8 @@
   "scripts": {
     "build": "tsc",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint functions/ts lib",
-    "lint:fix": "eslint functions/ts lib --fix"
+    "lint": "eslint \"functions/ts/**/*.ts\" \"lib/**/*.ts\"",
+    "lint:fix": "eslint \"functions/ts/**/*.ts\" \"lib/**/*.ts\" --fix"
   },
   "dependencies": {
     "@monorepo/shared": "workspace:*"

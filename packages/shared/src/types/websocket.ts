@@ -5,12 +5,17 @@ export interface WsMessage<T = unknown> {
 }
 
 // Example WebSocket actions - replace with your own
-export interface WsChatMessage extends WsMessage<{ message: string; roomId: string }> {
-  action: 'chat';
+export interface WsChatMessage extends WsMessage<{
+  message: string;
+  roomId: string;
+}> {
+  action: "chat";
 }
 
-export interface WsPresenceMessage extends WsMessage<{ status: 'online' | 'offline' }> {
-  action: 'presence';
+export interface WsPresenceMessage extends WsMessage<{
+  status: "online" | "offline";
+}> {
+  action: "presence";
 }
 
 export type WsIncomingMessage = WsChatMessage | WsPresenceMessage;

@@ -27,6 +27,7 @@ pnpm create:function
 ```
 
 This prompts you to choose:
+
 - Language (TypeScript or Python)
 - Type (REST API or WebSocket)
 - Function name
@@ -36,14 +37,14 @@ This prompts you to choose:
 Use the response helpers from `lib/response.ts`:
 
 ```typescript
-import type { APIGatewayProxyHandler } from 'aws-lambda';
-import { success, error, notFound } from '../../lib/response.js';
+import type { APIGatewayProxyHandler } from "aws-lambda";
+import { success, error, notFound } from "../../lib/response.js";
 
 export const handler: APIGatewayProxyHandler = async (event) => {
   const id = event.pathParameters?.id;
 
   if (!id) {
-    return notFound('ID required');
+    return notFound("ID required");
   }
 
   try {
@@ -74,6 +75,7 @@ def handler(event, context):
 ## WebSocket Handlers
 
 WebSocket APIs need these handlers:
+
 - `connect.ts/.py` - Called when client connects (`$connect` route)
 - `disconnect.ts/.py` - Called when client disconnects (`$disconnect` route)
 - `message.ts/.py` - Default handler for messages (`$default` route)
@@ -85,5 +87,5 @@ Access connection ID via `event.requestContext.connectionId`.
 Import types from the shared package:
 
 ```typescript
-import type { User, ApiResponse } from '@monorepo/shared';
+import type { User, ApiResponse } from "@monorepo/shared";
 ```

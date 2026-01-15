@@ -7,20 +7,16 @@
   },
   "scripts": {
     "dev": "pnpm --filter @monorepo/frontend dev",
-    "build": "pnpm -r build",
-
+    "build": "pnpm -r --stream build",
     "lint": "pnpm -r lint",
     "lint:fix": "pnpm -r lint:fix",
-    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md,py}\"",
-    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md,py}\"",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "typecheck": "pnpm -r typecheck",
     "check": "pnpm format:check && pnpm lint && pnpm typecheck",
     "fix": "pnpm format && pnpm lint:fix",
-
     "create:function": "tsx scripts/create-function.ts",
-
     "cdk:bootstrap": "tsx scripts/bootstrap.ts",
-
     "deploy:backend:dev": "STAGE=dev pnpm --filter @monorepo/infra deploy:backend",
     "deploy:backend:staging": "STAGE=staging pnpm --filter @monorepo/infra deploy:backend",
     "deploy:backend:prod": "STAGE=prod pnpm --filter @monorepo/infra deploy:backend",
@@ -30,16 +26,12 @@
     "deploy:backend:ws:dev": "STAGE=dev pnpm --filter @monorepo/infra deploy:ws",
     "deploy:backend:ws:staging": "STAGE=staging pnpm --filter @monorepo/infra deploy:ws",
     "deploy:backend:ws:prod": "STAGE=prod pnpm --filter @monorepo/infra deploy:ws",
-
     "deploy:frontend:staging": "STAGE=staging pnpm --filter @monorepo/infra deploy:frontend",
     "deploy:frontend:prod": "STAGE=prod pnpm --filter @monorepo/infra deploy:frontend",
-
     "push:staging": "pnpm fix && pnpm build && pnpm deploy:backend:staging && pnpm deploy:frontend:staging",
     "push:prod": "pnpm fix && pnpm build && pnpm deploy:backend:prod && pnpm deploy:frontend:prod",
-
     "rollback:staging": "STAGE=staging tsx scripts/rollback.ts",
     "rollback:prod": "STAGE=prod tsx scripts/rollback.ts",
-
     "prepare": "husky"
   },
   "devDependencies": {
@@ -66,7 +58,7 @@
       "eslint --fix",
       "prettier --write"
     ],
-    "*.{json,md,yml,yaml,py}": [
+    "*.{json,md,yml,yaml}": [
       "prettier --write"
     ]
   }

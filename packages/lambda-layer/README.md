@@ -20,8 +20,8 @@ Add packages to `nodejs/package.json`:
 Then use in any TypeScript Lambda:
 
 ```typescript
-import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
-import yourPackage from 'your-new-package';
+import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
+import yourPackage from "your-new-package";
 ```
 
 ### Python
@@ -53,7 +53,7 @@ Shared code lives in `packages/backend/lib/`. It's automatically bundled into ea
 ```typescript
 // packages/backend/lib/response.ts exists
 // Use it in any Lambda:
-import { success, error } from '../../lib/response.js';
+import { success, error } from "../../lib/response.js";
 ```
 
 ### Python
@@ -72,6 +72,7 @@ def handler(event, context):
 ```
 
 To add new shared Python utilities:
+
 1. Create file in `python/shared/` (e.g., `database.py`)
 2. Export it in `python/shared/__init__.py`
 3. Import in your Lambdas: `from shared import your_function`

@@ -1,11 +1,11 @@
 #!/usr/bin/env tsx
-import * as fs from 'fs';
-import * as path from 'path';
-import * as readline from 'readline';
-import { fileURLToPath } from 'url';
+import * as fs from "fs";
+import * as path from "path";
+import * as readline from "readline";
+import { fileURLToPath } from "url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const backendPath = path.join(__dirname, '../packages/backend/functions');
+const backendPath = path.join(__dirname, "../packages/backend/functions");
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -25,7 +25,7 @@ const select = async (prompt: string, options: string[]): Promise<string> => {
     if (index >= 0 && index < options.length) {
       return options[index];
     }
-    console.log('Invalid selection, try again.');
+    console.log("Invalid selection, try again.");
   }
 };
 
@@ -97,21 +97,21 @@ def handler(event, context):
 };
 
 async function main() {
-  console.log('\n🚀 Create Lambda Function\n');
+  console.log("\n🚀 Create Lambda Function\n");
 
-  const language = await select('Select language:', ['TypeScript', 'Python']);
-  const type = await select('Select type:', ['REST API', 'WebSocket']);
-  const name = await question('\nFunction name (e.g., users, orders, chat): ');
+  const language = await select("Select language:", ["TypeScript", "Python"]);
+  const type = await select("Select type:", ["REST API", "WebSocket"]);
+  const name = await question("\nFunction name (e.g., users, orders, chat): ");
 
   if (!name.trim()) {
-    console.log('Error: Function name is required');
+    console.log("Error: Function name is required");
     rl.close();
     process.exit(1);
   }
 
-  const lang = language === 'TypeScript' ? 'ts' : 'python';
-  const funcType = type === 'REST API' ? 'api' : 'websocket';
-  const ext = lang === 'ts' ? 'ts' : 'py';
+  const lang = language === "TypeScript" ? "ts" : "python";
+  const funcType = type === "REST API" ? "api" : "websocket";
+  const ext = lang === "ts" ? "ts" : "py";
 
   const dir = path.join(backendPath, lang, funcType);
   const filePath = path.join(dir, `${name}.${ext}`);
@@ -135,15 +135,17 @@ async function main() {
   fs.writeFileSync(filePath, template);
 
   console.log(`\n✅ Created: ${filePath}`);
-  console.log('\nNext steps:');
+  console.log("\nNext steps:");
   console.log(`  1. Implement your logic in ${name}.${ext}`);
-  console.log(`  2. Deploy with: pnpm deploy:backend:${funcType === 'api' ? 'api' : 'ws'}:dev`);
+  console.log(
+    `  2. Deploy with: pnpm deploy:backend:${funcType === "api" ? "api" : "ws"}:dev`,
+  );
 
   rl.close();
 }
 
 main().catch((err) => {
-  console.error('Error:', err);
+  console.error("Error:", err);
   rl.close();
   process.exit(1);
 });

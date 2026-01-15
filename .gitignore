@@ -1,6 +1,7 @@
 .idea/
 node_modules/
 cdk.out/
+claude_instructions.md
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
