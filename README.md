@@ -33,7 +33,7 @@ A pnpm monorepo for fullstack web applications with AWS CDK backend and React fr
 ### 1. Clone and install
 
 ```bash
-git clone <repo-url>
+git clone git@github.com:jelares/monorepo-web-stack.git
 cd monorepo-web-stack
 pnpm install
 ```
@@ -45,27 +45,32 @@ This automatically sets up Git hooks (via Husky) that format and lint your code 
 Each project uses an **AWS Profile** to ensure you deploy to the correct account. This is important if you have multiple AWS accounts (work, personal, etc.).
 
 **View your existing profiles:**
+
 ```bash
 aws configure list-profiles
 ```
 
 **See details of a profile (which account it points to):**
+
 ```bash
 aws sts get-caller-identity --profile my-profile-name
 ```
 
 **Create a new profile:**
+
 ```bash
 aws configure --profile my-new-profile
 ```
 
 You'll be prompted for:
+
 - **AWS Access Key ID** - from IAM console (see below)
 - **AWS Secret Access Key** - from IAM console
 - **Default region** - e.g., `us-east-1`
 - **Output format** - press Enter for default
 
 **To get Access Keys:**
+
 1. Go to AWS Console → IAM → Users → Your User
 2. Security credentials tab → Create access key
 3. Choose "Command Line Interface (CLI)"
@@ -78,6 +83,7 @@ cp .env.example .env
 ```
 
 Edit `.env`:
+
 ```env
 # Your app name - used as prefix for all AWS resources (e.g., "myapp" creates stacks like "myapp-ApiStack-dev", "myapp-FrontendStack-prod")
 APP_NAME=myapp
@@ -87,6 +93,7 @@ AWS_PROFILE=my-profile-name
 ```
 
 **APP_NAME** is the prefix for all AWS resources created by this project:
+
 - CloudFormation stacks: `myapp-ApiStack-dev`, `myapp-FrontendStack-prod`
 - Lambda functions: `myapp-health-dev`, `myapp-users-prod`
 - S3 buckets: `myapp-frontend-dev-123456789`
@@ -114,6 +121,7 @@ Starts Vite dev server at `http://localhost:3000`.
 You can run commands from the repo root or from within a package folder:
 
 **From repo root** (using pnpm filters):
+
 ```bash
 pnpm dev                                      # Run frontend dev server
 pnpm --filter @monorepo/frontend add axios    # Add package to frontend
@@ -121,6 +129,7 @@ pnpm --filter @monorepo/backend add zod       # Add package to backend
 ```
 
 **From package folder**:
+
 ```bash
 cd packages/frontend
 pnpm dev              # Run dev server
@@ -141,42 +150,43 @@ Interactive CLI that scaffolds TypeScript or Python functions for REST API or We
 
 ### Code Quality
 
-| Command | Description |
-|---------|-------------|
-| `pnpm format` | Format all files with Prettier |
-| `pnpm lint` | Run ESLint on all packages |
-| `pnpm lint:fix` | Auto-fix lint issues |
-| `pnpm typecheck` | TypeScript type checking |
-| `pnpm check` | Run all checks (format, lint, typecheck) |
-| `pnpm fix` | Auto-fix all (format + lint) |
+| Command          | Description                              |
+| ---------------- | ---------------------------------------- |
+| `pnpm format`    | Format all files with Prettier           |
+| `pnpm lint`      | Run ESLint on all packages               |
+| `pnpm lint:fix`  | Auto-fix lint issues                     |
+| `pnpm typecheck` | TypeScript type checking                 |
+| `pnpm check`     | Run all checks (format, lint, typecheck) |
+| `pnpm fix`       | Auto-fix all (format + lint)             |
 
 ### Deployment
 
-| Command | Description |
-|---------|-------------|
-| `pnpm deploy:backend:dev` | Deploy all backend stacks to dev |
-| `pnpm deploy:backend:staging` | Deploy all backend stacks to staging |
-| `pnpm deploy:backend:prod` | Deploy all backend stacks to prod |
-| `pnpm deploy:backend:api:dev` | Deploy only REST API stack to dev |
-| `pnpm deploy:backend:ws:dev` | Deploy only WebSocket stack to dev |
-| `pnpm deploy:frontend:staging` | Deploy frontend to staging |
-| `pnpm deploy:frontend:prod` | Deploy frontend to prod |
+| Command                        | Description                          |
+| ------------------------------ | ------------------------------------ |
+| `pnpm deploy:backend:dev`      | Deploy all backend stacks to dev     |
+| `pnpm deploy:backend:staging`  | Deploy all backend stacks to staging |
+| `pnpm deploy:backend:prod`     | Deploy all backend stacks to prod    |
+| `pnpm deploy:backend:api:dev`  | Deploy only REST API stack to dev    |
+| `pnpm deploy:backend:ws:dev`   | Deploy only WebSocket stack to dev   |
+| `pnpm deploy:frontend:staging` | Deploy frontend to staging           |
+| `pnpm deploy:frontend:prod`    | Deploy frontend to prod              |
 
 ### Push (Format + Lint + Build + Deploy)
 
-| Command | Description |
-|---------|-------------|
-| `pnpm push:staging` | Full deploy to staging (runs checks first) |
-| `pnpm push:prod` | Full deploy to production (runs checks first) |
+| Command             | Description                                   |
+| ------------------- | --------------------------------------------- |
+| `pnpm push:staging` | Full deploy to staging (runs checks first)    |
+| `pnpm push:prod`    | Full deploy to production (runs checks first) |
 
 ### Rollback
 
-| Command | Description |
-|---------|-------------|
+| Command                         | Description                              |
+| ------------------------------- | ---------------------------------------- |
 | `pnpm rollback:backend:staging` | Interactive rollback for staging Lambdas |
-| `pnpm rollback:backend:prod` | Interactive rollback for prod Lambdas |
+| `pnpm rollback:backend:prod`    | Interactive rollback for prod Lambdas    |
 
 Rollback shows you all available versions and lets you choose:
+
 ```
 Available versions for my-function:
   1. v5 (current) - deployed 2024-01-13 10:30
@@ -195,17 +205,31 @@ Backend is split into separate stacks for faster deploys:
 - **FrontendStack**: S3 bucket + CloudFront distribution
 
 When you change only one Lambda, deploy just that stack:
+
 ```bash
 pnpm deploy:backend:api:dev  # Only deploys ApiStack
 ```
 
+### Destroying Stacks
+
+To delete all resources for a stage:
+
+```bash
+cd packages/infra
+pnpm cdk destroy --all --context stage=dev
+```
+
+The `--all` flag destroys all stacks (Shared, Api, WebSocket, Frontend) in the correct dependency order.
+
+**Cleanup behavior by stage:**
+
+- **dev/staging**: S3 buckets auto-delete with contents, all resources removed
+- **prod**: S3 bucket is retained (must be manually deleted) to prevent accidental data loss
+
 ## Versioning & Rollback
 
-Staging and prod deployments are versioned for instant rollback. Dev is not versioned.
+### Frontend Versioning (Working)
 
-### How it works
-
-**Frontend:**
 ```
 S3 bucket:
 ├── deploys/
@@ -219,15 +243,16 @@ S3 bucket:
 - Rollback = change origin path back to previous version
 - Old versions beyond the last N are automatically deleted
 
-**Backend (Lambda):**
-- Each deploy creates a new Lambda version
-- Alias (`staging`/`prod`) points to current version
-- Rollback = update alias to point to previous version
-- Old versions beyond the last N are automatically deleted
+### Backend Versioning (TODO)
+
+> **Note**: Lambda versioning is currently disabled. Rollback requires redeploying previous code.
+
+Lambda versioning with aliases is planned for production use. See `claude_instructions.md` for implementation notes.
 
 ### Configuration
 
 In `.env`:
+
 ```env
 VERSIONS_TO_KEEP=5   # Keep last 5 versions for rollback
 ```
@@ -237,12 +262,14 @@ VERSIONS_TO_KEEP=5   # Keep last 5 versions for rollback
 We use [AWS SSM Parameter Store](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html) to track the current frontend version number.
 
 **What is SSM Parameter Store?**
+
 - Simple key-value config storage (NOT the same as Secrets Manager)
 - Free tier for standard parameters
 - Scripts and Lambdas can read/write values
 - Good for: config values, feature flags, version tracking
 
 **How we use it:**
+
 ```
 Parameter: /myapp/prod/frontend/current-version
 Value: "5"
@@ -253,6 +280,7 @@ The deploy script reads current version, increments it, deploys, then writes the
 ## Git Hooks (Husky)
 
 On every commit, Husky automatically:
+
 1. Formats staged files with Prettier
 2. Runs ESLint on staged files
 3. Blocks commit if there are errors

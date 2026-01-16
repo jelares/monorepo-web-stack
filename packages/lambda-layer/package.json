@@ -3,6 +3,6 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "cd nodejs && pnpm install --prod"
+    "build": "cd nodejs && npm install --omit=dev"
   }
 }

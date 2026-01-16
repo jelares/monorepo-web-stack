@@ -7,11 +7,13 @@ React + Vite + Zustand frontend application.
 ### Run dev server
 
 From repo root:
+
 ```bash
 pnpm dev
 ```
 
 Or from this folder:
+
 ```bash
 cd packages/frontend
 pnpm dev
@@ -22,11 +24,13 @@ Opens at http://localhost:3000
 ### Add a package
 
 From repo root:
+
 ```bash
 pnpm --filter @monorepo/frontend add some-package
 ```
 
 Or from this folder:
+
 ```bash
 pnpm add some-package
 ```
@@ -55,7 +59,7 @@ src/
 State management uses Zustand. Example store in `src/store/index.ts`:
 
 ```typescript
-import { create } from 'zustand';
+import { create } from "zustand";
 
 interface AppState {
   count: number;
@@ -71,7 +75,7 @@ export const useAppStore = create<AppState>((set) => ({
 Use in components:
 
 ```tsx
-import { useAppStore } from './store';
+import { useAppStore } from "./store";
 
 function MyComponent() {
   const { count, increment } = useAppStore();
@@ -84,7 +88,7 @@ function MyComponent() {
 Import types from the shared package:
 
 ```typescript
-import type { User, ApiResponse } from '@monorepo/shared';
+import type { User, ApiResponse } from "@monorepo/shared";
 ```
 
 ## Path Aliases
@@ -92,6 +96,6 @@ import type { User, ApiResponse } from '@monorepo/shared';
 `@/` maps to `src/`:
 
 ```typescript
-import { useAppStore } from '@/store';
-import MyComponent from '@/components/MyComponent';
+import { useAppStore } from "@/store";
+import MyComponent from "@/components/MyComponent";
 ```
